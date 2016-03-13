@@ -1,0 +1,73 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: DBpedia Lookup
+  description: DBpedia Lookup is a web service that can be used to look up DBpedia URIs by related keywords. Related means that either the label of a resource matches, or an anchor text that was frequently used in Wikipedia to refer to a specific resource matches (for example the resource http://dbpedia.org/resource/United_States can be looked up by the string "USA"). The results are ranked by the number of inlinks pointing from other Wikipedia pages at a result page.
+  termsOfService: http://wiki.dbpedia.org/ideas/terms/
+  license:
+    name: Apache License 2.0
+    url: https://github.com/dbpedia/lookup/blob/master/LICENSE
+host: lookup.dbpedia.org
+basePath: /api/search.asmx
+schemes:
+  - http
+consumes:
+  - application/json
+  - application/xml
+produces:
+  - application/json
+  - application/xml
+paths:
+  /KeywordSearch:
+    get:
+      description: The Keyword Search API can be used to find related DBpedia resources for a given string. The string may consist of a single or multiple words.
+      operationId: keywordSearch
+      parameters:
+        - name: QueryString
+          in: query
+          description: a string for which a DBpedia URI should be found.
+          required: false
+          type: string
+        - name: QueryClass 
+          in: query
+          description:  a DBpedia class from the Ontology that the results should have (for owl#Thing and untyped resource, leave this parameter empty).
+          required: false
+          type: string
+        - name: maxHits
+          in: query
+          description: Default is 5. The maximum number of returned results
+          default: 5
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: DBpedia Lookup currently contains data from DBpedia 3.8. Resources of redirect
+          schema:
+            type: string
+  /PrefixSearch:
+    get:
+      description: The PrefixSearch API can be used to implement autocomplete input boxes. For a given partial keyword like berl the API returns URIs of related DBpedia resources like http://dbpedia.org/resource/Berlin.
+      operationId: prefixSearch
+      parameters:
+        - name: QueryString
+          in: query
+          description: a string for which a DBpedia URI should be found.
+          required: false
+          type: string
+        - name: QueryClass 
+          in: query
+          description:  a DBpedia class from the Ontology that the results should have (for owl#Thing and untyped resource, leave this parameter empty).
+          required: false
+          type: string
+        - name: maxHits
+          in: query
+          description: Default is 5. The maximum number of returned results
+          default: 5
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: DBpedia Lookup currently contains data from DBpedia 3.8. Resources of redirect
+          schema:
+            type: string
+  
